@@ -15,7 +15,7 @@ static int32_t offset_from_center = 0;
 static BSEMAPHORE_DECL(image_ready_sem, TRUE);
 
 /*
- *  Returns the line's width extracted from the image buffer given
+ *  Returns the error between (dist_r and dist_l)/2
  *  Returns 0 if line not found
  */
 uint16_t extract_line_width(uint8_t *buffer){
@@ -79,11 +79,11 @@ uint16_t extract_line_width(uint8_t *buffer){
 		}
 	}while(wrong_line);
 
-	//Find offset = dist_right - dist_left
-	if(abs(offset)>IMAGE_BUFFER_SIZE)
-		return offset=IMAGE_BUFFER_SIZE;
+	//Find offset = (dist_right - dist_left)
+	if(abs(offset)>IMAGE_BUFFER_SIZE/2)
+		return offset=IMAGE_BUFFER_SIZE/2;
 	else
-		return offset = IMAGE_BUFFER_SIZE-end-begin; //l2-l1
+		return offset = (IMAGE_BUFFER_SIZE-end-begin); //(l2-l1)/2 = offset 
 }
 
 
