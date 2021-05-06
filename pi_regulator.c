@@ -61,7 +61,7 @@ static THD_FUNCTION(PiRegulator, arg) {
         //distance_cm is modified by the image processing thread
         speed = NORMAL_SPEED;
         //computes a correction factor to let the robot rotate to be in front of the line
-       speed_rotation = pi_regulator(get_offset());
+        speed_rotation = pi_regulator(get_offset_from_center());
 
         //if the line is nearly in front of the camera, don't rotate
         if(abs(speed_correction) < ROTATION_THRESHOLD){
