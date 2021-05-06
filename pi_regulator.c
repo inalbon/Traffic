@@ -10,7 +10,7 @@
 #include <pi_regulator.h>
 #include <process_image.h>
 
-#define NORMAL_SPEED 250; //step/s
+#define NORMAL_SPEED 50; //step/s
 
 //simple PI regulator implementation
 int16_t pi_regulator(float distance, float goal){
