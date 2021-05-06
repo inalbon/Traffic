@@ -13,35 +13,9 @@
 #define NORMAL_SPEED 50; //step/s
 
 //simple PI regulator implementation
-int16_t pi_regulator(float distance, float goal){
+int16_t pi_regulator(float error){
 
-	float error = 0;
-	float speed = 0;
 
-	static float sum_error = 0;
-
-	error = distance - goal;
-
-	//disables the PI regulator if the error is to small
-	//this avoids to always move as we cannot exactly be where we want and 
-	//the camera is a bit noisy
-	if(fabs(error) < ERROR_THRESHOLD){
-		return 0;
-	}
-
-	sum_error += error;
-
-	//we set a maximum and a minimum for the sum to avoid an uncontrolled growth
-	if(sum_error > MAX_SUM_ERROR){
-		sum_error = MAX_SUM_ERROR;
-	}else if(sum_error < -MAX_SUM_ERROR){
-		sum_error = -MAX_SUM_ERROR;
-	}
-
-	speed = KP * error + KI * sum_error;
-    chprintf((BaseSequentialStream *)&SD3, "\n error = %f \n",error);
-
-    return (int16_t)speed;
 }
 
 int16_t get_speed_pi(void){
