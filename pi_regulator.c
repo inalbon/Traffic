@@ -44,40 +44,11 @@ int16_t pi_regulator(float distance, float goal){
     return (int16_t)speed;
 }
 
-static THD_WORKING_AREA(waPiRegulator, 256);
-static THD_FUNCTION(PiRegulator, arg) {
+int16_t get_speed_pi(void){
 
-    chRegSetThreadName(__FUNCTION__);
-    (void)arg;
+    int16_t speed_rotation = 0;
 
-    systime_t time;
-
-    int16_t speed = 0;
-    int16_t speed_correction = 0;
-
-    while(1){
-        time = chVTGetSystemTime();
-        
-        //computes the speed to give to the motors
-        //distance_cm is modified by the image processing thread
-        speed = NORMAL_SPEED;
-        //computes a correction factor to let the robot rotate to be in front of the line
-        speed_rotation = pi_regulator(get_offset_from_center());
-
-        //if the line is nearly in front of the camera, don't rotate
-        if(abs(speed_correction) < ROTATION_THRESHOLD){
-        	speed_correction = 0;
-        }
-        //chprintf((BaseSequentialStream*)&SD3, "\n Speed correction = %d\n", speed_correction);
-        //applies the speed from the PI regulator and the correction for the rotation
-		//right_motor_set_speed(speed - ROTATION_COEFF * speed_correction);
-		//left_motor_set_speed(speed + ROTATION_COEFF * speed_correction);
-
-        //100Hz
-        chThdSleepUntilWindowed(time, time + MS2ST(10));
-    }
-}
-
-void pi_regulator_start(void){
-	chThdCreateStatic(waPiRegulator, sizeof(waPiRegulator), NORMALPRIO, PiRegulator, NULL);
+    //computes a correction factor to let the robot rotate to be in front of the line
+    speed_rotation = pi_regulator(get_offset_from_center());
+    return speed_rotation;
 }
