@@ -9,7 +9,7 @@
 #include <process_image.h>
 
 
-static float distance_cm = 0;
+static float offset = 0;
 static uint16_t line_position = IMAGE_BUFFER_SIZE/2;
 
 //semaphore
@@ -150,11 +150,6 @@ static THD_FUNCTION(ProcessImage, arg) {
 		//search for a line in the image and gets its width in pixels
 		lineWidth = extract_line_width(image);
 
-		//converts the width into a distance between the robot and the camera
-		if(lineWidth){
-			distance_cm = PXTOCM/lineWidth;
-		}
-
 		if(send_to_computer){
 			//sends to the computer the image
 			SendUint8ToComputer(image, IMAGE_BUFFER_SIZE);
@@ -164,9 +159,8 @@ static THD_FUNCTION(ProcessImage, arg) {
     }
 }
 
-float get_distance_cm(void){
-	return distance_cm;
-}
+float get_offset(void){
+	return offset;
 
 uint16_t get_line_position(void){
 	return line_position;
