@@ -18,72 +18,9 @@ static BSEMAPHORE_DECL(image_ready_sem, TRUE);
  *  Returns the error between (dist_r and dist_l)/2
  *  Returns 0 if line not found
  */
-uint16_t extract_line_width(uint8_t *buffer){
+int32_t extract_offset_from_center(uint8_t *buffer){
 
-	uint16_t i = 0, begin = 0, end = 0;
-	uint8_t stop = 0, wrong_line = 0, line_not_found = 0;
-	uint32_t mean = 0;
 
-	//performs an average
-	for(uint16_t i = 0 ; i < IMAGE_BUFFER_SIZE ; i++){
-		mean += buffer[i];
-	}
-	mean /= IMAGE_BUFFER_SIZE;
-
-	do{
-		wrong_line = 0;
-		//search for a begin
-		while(stop == 0 && i < (IMAGE_BUFFER_SIZE - WIDTH_SLOPE))
-		{ 
-			//the slope must at least be WIDTH_SLOPE wide and is compared
-		    //to the mean of the image
-		    if(buffer[i] > mean && buffer[i+WIDTH_SLOPE] < mean)
-		    {
-		        begin = i;
-		        stop = 1;
-		    }
-		    i++;
-		}
-		//if a begin was found, search for an end
-		if (i < (IMAGE_BUFFER_SIZE - WIDTH_SLOPE) && begin)
-		{
-		    stop = 0;
-		    
-		    while(stop == 0 && i < IMAGE_BUFFER_SIZE)
-		    {
-		        if(buffer[i] > mean && buffer[i-WIDTH_SLOPE] < mean)
-		        {
-		            end = i;
-		            stop = 1;
-		        }
-		        i++;
-		    }
-		    //if an end was not found
-		    if (i > IMAGE_BUFFER_SIZE || !end)
-		    {
-		        line_not_found = 1;
-		    }
-		}
-		else//if no begin was found
-		{
-		    line_not_found = 1;
-		}
-
-		//if a line too small has been detected, continues the search
-		if(!line_not_found && (end-begin) < MIN_LINE_WIDTH){
-			i = end;
-			begin = 0;
-			end = 0;
-			stop = 0;
-			wrong_line = 1;
-		}
-	}while(wrong_line);
-
-	//Find offset = (dist_right - dist_left)
-	if(abs(offset)>IMAGE_BUFFER_SIZE/2)
-		return offset=IMAGE_BUFFER_SIZE/2;
-	else
-		return offset = (IMAGE_BUFFER_SIZE-end-begin); //(l2-l1)/2 = offset 
 }
 
 
@@ -136,7 +73,7 @@ static THD_FUNCTION(ProcessImage, arg) {
 		}
 
 		//search for a line in the image and gets its width in pixels
-		lineWidth = extract_line_width(image);
+		lineWidth = extract_offset_from_center(image);
 
 		offset_from_center = extract_offset_from_center(image);
 
@@ -151,6 +88,7 @@ static THD_FUNCTION(ProcessImage, arg) {
 
 float get_offset_from_center(void){
 	return offset_from_center;
+}
 
 void process_image_start(void){
 	chThdCreateStatic(waProcessImage, sizeof(waProcessImage), NORMALPRIO, ProcessImage, NULL);
