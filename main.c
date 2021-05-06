@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 
+#include "spi_comm.h"
 #include "ch.h"
 #include "hal.h"
 #include "memory_protection.h"
