@@ -25,8 +25,6 @@ uint16_t extract_line_width(uint8_t *buffer){
 	uint8_t stop = 0, wrong_line = 0, line_not_found = 0;
 	uint32_t mean = 0;
 
-	static uint16_t last_width = PXTOCM/GOAL_DISTANCE;
-
 	//performs an average
 	for(uint16_t i = 0 ; i < IMAGE_BUFFER_SIZE ; i++){
 		mean += buffer[i];
@@ -82,14 +80,8 @@ uint16_t extract_line_width(uint8_t *buffer){
 		}
 	}while(wrong_line);
 
-	if(line_not_found){
-		begin = 0;
-		end = 0;
-		width = last_width;
-	}else{
-		last_width = width = (end - begin);
-		line_position = (begin + end)/2; //gives the line position.
-	}
+	line_position = (begin + end)/2; //gives the line position.
+	
 
 	//sets a maximum width or returns the measured width
 	if((PXTOCM/width) > MAX_DISTANCE){
@@ -151,7 +143,7 @@ static THD_FUNCTION(ProcessImage, arg) {
 		lineWidth = extract_line_width(image);
 
 		offset_from_center = extract_offset_from_center(image);
-		
+
 		if(send_to_computer){
 			//sends to the computer the image
 			SendUint8ToComputer(image, IMAGE_BUFFER_SIZE);
