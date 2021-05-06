@@ -39,6 +39,7 @@ int16_t pi_regulator(float distance, float goal){
 	}
 
 	speed = KP * error + KI * sum_error;
+    chprintf((BaseSequentialStream *)&SD3, "\n error = %f \n",error);
 
     return (int16_t)speed;
 }
