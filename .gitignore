@@ -1,3 +1,13 @@
+build
+.DS_store
+.cproject
+.project
+.build
+.dep
+.xml
+.settings
+.launch
+
 # Prerequisites
 *.d
 
