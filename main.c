@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 
+#include "spi_comm.h"
 #include "ch.h"
 #include "hal.h"
 #include "memory_protection.h"
@@ -10,10 +11,15 @@
 #include <main.h>
 #include <motors.h>
 #include <camera/po8030.h>
+#include <sensors/proximity.h>
 #include <chprintf.h>
 
 #include <pi_regulator.h>
 #include <process_image.h>
+
+messagebus_t bus;
+MUTEX_DECL(bus_lock);
+CONDVAR_DECL(bus_condvar);
 
 void SendUint8ToComputer(uint8_t* data, uint16_t size) 
 {
@@ -40,6 +46,7 @@ int main(void)
     halInit();
     chSysInit();
     mpu_init();
+    messagebus_init(&bus, &bus_lock, &bus_condvar);
 
     //starts the serial communication
     serial_start();
@@ -48,6 +55,8 @@ int main(void)
     //starts the camera
     dcmi_start();
 	po8030_start();
+    //starts the proximity sensors and the thread proximity
+    proximity_start();
 	//inits the motors
 	motors_init();
 
