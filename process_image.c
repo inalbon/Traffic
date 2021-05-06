@@ -149,7 +149,7 @@ static THD_FUNCTION(ProcessImage, arg) {
     }
 }
 
-float get_offset(void){
+float get_offset_from_center(void){
 	return offset_from_center;
 
 void process_image_start(void){
