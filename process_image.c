@@ -10,7 +10,6 @@
 
 
 static int32_t offset_from_center = 0;
-static uint16_t line_position = IMAGE_BUFFER_SIZE/2;
 
 //semaphore
 static BSEMAPHORE_DECL(image_ready_sem, TRUE);
@@ -79,9 +78,6 @@ uint16_t extract_line_width(uint8_t *buffer){
 			wrong_line = 1;
 		}
 	}while(wrong_line);
-
-	line_position = (begin + end)/2; //gives the line position.
-	
 
 	//sets a maximum width or returns the measured width
 	if((PXTOCM/width) > MAX_DISTANCE){
@@ -155,10 +151,6 @@ static THD_FUNCTION(ProcessImage, arg) {
 
 float get_offset(void){
 	return offset_from_center;
-
-uint16_t get_line_position(void){
-	return line_position;
-}
 
 void process_image_start(void){
 	chThdCreateStatic(waProcessImage, sizeof(waProcessImage), NORMALPRIO, ProcessImage, NULL);
