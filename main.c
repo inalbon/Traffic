@@ -16,6 +16,7 @@
 
 #include <pi_regulator.h>
 #include <process_image.h>
+#include <move.h>
 
 messagebus_t bus;
 MUTEX_DECL(bus_lock);
@@ -60,8 +61,8 @@ int main(void)
 	//inits the motors
 	motors_init();
 
-	//stars the threads for the pi regulator and the processing of the image
-	pi_regulator_start();
+	//stars the threads for the speed of the robot and the processing of the image
+	speed_start();
 	process_image_start();
 
     /* Infinite loop. */
