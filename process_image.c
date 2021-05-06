@@ -79,13 +79,13 @@ uint16_t extract_line_width(uint8_t *buffer){
 		}
 	}while(wrong_line);
 
-	//sets a maximum width or returns the measured width
-	if((PXTOCM/width) > MAX_DISTANCE){
-		return PXTOCM/MAX_DISTANCE;
-	}else{
-		return width;
-	}
+	//Find offset = dist_right - dist_left
+	if(abs(offset)>IMAGE_BUFFER_SIZE)
+		return offset=IMAGE_BUFFER_SIZE;
+	else
+		return offset = IMAGE_BUFFER_SIZE-end-begin; //l2-l1
 }
+
 
 static THD_WORKING_AREA(waCaptureImage, 256);
 static THD_FUNCTION(CaptureImage, arg) {
