@@ -9,7 +9,7 @@
 #include <process_image.h>
 
 
-static float offset = 0;
+static int32_t offset_from_center = 0;
 static uint16_t line_position = IMAGE_BUFFER_SIZE/2;
 
 //semaphore
@@ -150,6 +150,8 @@ static THD_FUNCTION(ProcessImage, arg) {
 		//search for a line in the image and gets its width in pixels
 		lineWidth = extract_line_width(image);
 
+		offset_from_center = extract_offset_from_center(image);
+		
 		if(send_to_computer){
 			//sends to the computer the image
 			SendUint8ToComputer(image, IMAGE_BUFFER_SIZE);
@@ -160,7 +162,7 @@ static THD_FUNCTION(ProcessImage, arg) {
 }
 
 float get_offset(void){
-	return offset;
+	return offset_from_center;
 
 uint16_t get_line_position(void){
 	return line_position;
