@@ -43,14 +43,24 @@ static THD_FUNCTION(Speed, arg) {
 
     int16_t speed = 0;
     int16_t speed_rotation = 0;
+    int16_t speed_rot_temp = 0;
 
     while(1){
         time = chVTGetSystemTime();
+
+        //if speed rotation of PI regulator too high, stores the old value
+        speed_rot_temp = speed_rotation;
 
         speed = set_speed_lin(obstacle_detection());
 
         //computes a correction factor to rotate the robot to be on the line
         speed_rotation = set_speed_rot(obstacle_detection(),get_speed_pi());
+
+        //if robot nearly on the line, do not rotate
+        if(abs(speed_rotation)<ROTATION_THRESHOLD)
+        	speed_rotation = 0;
+        else if(abs(speed_rotation)>ROTATION_MAX)
+        	speed_rotation = speed_rot_temp;
 
         //applies the speed rotation from the PI regulator and the linear speed
 		right_motor_set_speed(speed + speed_rotation);
