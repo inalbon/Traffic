@@ -19,6 +19,72 @@ static BSEMAPHORE_DECL(image_ready_sem, TRUE);
  *  Returns 0 if line not found
  */
 int32_t extract_offset_from_center(uint8_t *buffer){
+	
+	int32_t offset=0;
+	uint16_t i = 0, begin = 0, end = 0;
+	uint8_t stop = 0, wrong_line = 0, line_not_found = 0;
+	uint32_t mean = 0;
+
+	//performs an average
+	for(uint16_t i = 0 ; i < IMAGE_BUFFER_SIZE ; i++){
+		mean += buffer[i];
+	}
+	mean /= IMAGE_BUFFER_SIZE;
+
+	do{
+		wrong_line = 0;
+		//search for a begin
+		while(stop == 0 && i < (IMAGE_BUFFER_SIZE - WIDTH_SLOPE))
+		{ 
+			//the slope must at least be WIDTH_SLOPE wide and is compared
+		    //to the mean of the image
+		    if(buffer[i] > mean && buffer[i+WIDTH_SLOPE] < mean)
+		    {
+		        begin = i;
+		        stop = 1;
+		    }
+		    i++;
+		}
+		//if a begin was found, search for an end
+		if (i < (IMAGE_BUFFER_SIZE - WIDTH_SLOPE) && begin)
+		{
+		    stop = 0;
+		    
+		    while(stop == 0 && i < IMAGE_BUFFER_SIZE)
+		    {
+		        if(buffer[i] > mean && buffer[i-WIDTH_SLOPE] < mean)
+		        {
+		            end = i;
+		            stop = 1;
+		        }
+		        i++;
+		    }
+		    //if an end was not found
+		    if (i > IMAGE_BUFFER_SIZE || !end)
+		    {
+		        line_not_found = 1;
+		    }
+		}
+		else//if no begin was found
+		{ 
+		    line_not_found = 1;
+		}
+
+		//if a line too small has been detected, continues the search
+		if(!line_not_found && (end-begin) < MIN_LINE_WIDTH){
+			i = end;
+			begin = 0;
+			end = 0;
+			stop = 0;
+			wrong_line = 1;
+		}
+	}while(wrong_line);
+
+	//Find offset = (dist_right - dist_left)/2
+	if(abs(offset)>IMAGE_BUFFER_SIZE/2)
+		return offset=IMAGE_BUFFER_SIZE/2;
+	else
+		return offset = (IMAGE_BUFFER_SIZE-end-begin)/2; //(l2-l1)/2 = offset 
 
 
 }
@@ -56,7 +122,6 @@ static THD_FUNCTION(ProcessImage, arg) {
 	uint8_t *img_buff_ptr;
 	uint8_t image[IMAGE_BUFFER_SIZE] = {0};
 	uint16_t lineWidth = 0;
-
 	bool send_to_computer = true;
 
     while(1){
@@ -74,7 +139,7 @@ static THD_FUNCTION(ProcessImage, arg) {
 
 		//search for a line in the image and gets its width in pixels
 		lineWidth = extract_offset_from_center(image);
-
+		//search for an offset from the center of the line to follow
 		offset_from_center = extract_offset_from_center(image);
 
 		if(send_to_computer){
