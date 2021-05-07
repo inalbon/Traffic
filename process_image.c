@@ -121,7 +121,7 @@ static THD_FUNCTION(ProcessImage, arg) {
 
 	uint8_t *img_buff_ptr;
 	uint8_t image[IMAGE_BUFFER_SIZE] = {0};
-	uint16_t lineWidth = 0;
+
 	bool send_to_computer = true;
 
     while(1){
@@ -137,8 +137,6 @@ static THD_FUNCTION(ProcessImage, arg) {
 			image[i/2] = (uint8_t)img_buff_ptr[i]&0xF8;
 		}
 
-		//search for a line in the image and gets its width in pixels
-		lineWidth = extract_offset_from_center(image);
 		//search for an offset from the center of the line to follow
 		offset_from_center = extract_offset_from_center(image);
 
