@@ -8,9 +8,8 @@
 #include <obstacle_detection.h>
 #include <pi_regulator.h>
 #include <motors.h>
+#include <move.h>
 
-#define NORMAL_SPEED 350; // step/s
-#define SPEED_MAX 350; //step/s
 
 int16_t set_speed_rot(bool obstacle, int16_t speed_pi){
 	int16_t speed = 0;
