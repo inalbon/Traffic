@@ -8,6 +8,7 @@ extern "C" {
 #include "camera/dcmi_camera.h"
 #include "msgbus/messagebus.h"
 #include "parameter/parameter.h"
+#include "move.h"
 
 
 //constants for the differents parts of the project
@@ -15,7 +16,7 @@ extern "C" {
 #define WIDTH_SLOPE				5
 #define MIN_LINE_WIDTH			40
 #define ROTATION_THRESHOLD		10
-#define ROTATION_MAX			125 
+#define ROTATION_MAX			(NORMAL_SPEED/3) 
 #define ROTATION_COEFF			2 
 #define MAX_DISTANCE 			25.0f
 #define ERROR_THRESHOLD			0.1f	//[cm] because of the noise of the camera
