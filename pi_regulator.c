@@ -45,7 +45,7 @@ int16_t get_speed_pi(void){
 
     int16_t speed_rotation = 0;
 
-    //computes a correction factor to let the robot rotate to be in front of the line
+    //computes a rotation to let the robot rotate to be on the line
     speed_rotation = pi_regulator(get_offset_from_center());
     return speed_rotation;
 }
