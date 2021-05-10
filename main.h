@@ -17,8 +17,6 @@ extern "C" {
 #define MIN_LINE_WIDTH			40
 #define ROTATION_THRESHOLD		10
 #define ROTATION_MAX			(NORMAL_SPEED/3) 
-#define ROTATION_COEFF			2 
-#define MAX_DISTANCE 			25.0f
 #define ERROR_THRESHOLD			0.1f	//[cm] because of the noise of the camera
 #define KP						0.2f
 #define KI 						0.5f	//must not be zero
