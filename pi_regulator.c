@@ -18,7 +18,7 @@ int16_t pi_regulator(float error){
     static float sum_error = 0;
 
     //disables the PI regulator if the error is to small
-    //this avoids to always move as we cannot exactly be where we want and 
+    //this avoids to always rotate the robot as we cannot be exactly on the line and
     //the camera is a bit noisy
     if(fabs(error) < ERROR_THRESHOLD){
         return 0;
