@@ -92,7 +92,7 @@ int16_t extract_offset_from_center(uint8_t *buffer){
 		offset = (IMAGE_BUFFER_SIZE-end-begin)/2;
 	}
 
-	chprintf((BaseSequentialStream*)&SD3, "\n offset =  %d \n ", offset);
+	//chprintf((BaseSequentialStream*)&SD3, "\n offset =  %d \n ", offset);
 
 	return offset;
 }

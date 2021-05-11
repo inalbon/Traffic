@@ -15,7 +15,7 @@ int16_t pi_regulator(int16_t error){
 
     float speed = 0;
 
-    static int32_t sum_error = 0;
+    static int16_t sum_error = 0;
 
     //disables the PI regulator if the error is to small
     //this avoids to always move as we cannot exactly be where we want and 
@@ -25,6 +25,7 @@ int16_t pi_regulator(int16_t error){
     }
 
     sum_error += error;
+    //chprintf((BaseSequentialStream*)&SD3, "\n sum error =  %d \n ", sum_error);
 
     //we set a maximum and a minimum for the sum to avoid an uncontrolled growth
     if(sum_error > MAX_SUM_ERROR){
@@ -34,10 +35,10 @@ int16_t pi_regulator(int16_t error){
     }
 
     speed = KP * error + KI * sum_error;
-    //chprintf((BaseSequentialStream *)&SD3, "error = %f \n",error);
+
+    //chprintf((BaseSequentialStream *)&SD3, "speed = %f \n",speed);
 
     return (int16_t)speed;
-
 
 }
 
