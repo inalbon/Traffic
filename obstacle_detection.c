@@ -14,7 +14,8 @@ enum{ IR0, IR1, IR2, IR3, IR4, IR5, IR6, IR7};
 #define DELTA_MAX 300 //difference between ambient and reflected light
 
 bool obstacle_detection(void){
-	uint16_t i = 0;
+
+	uint8_t i = 0;
 	bool obstacle = 0;
 	int16_t delta[PROXIMITY_NB_CHANNELS] = {0};
 
@@ -25,8 +26,7 @@ bool obstacle_detection(void){
 			obstacle = 1;
 	}
 
-	chprintf((BaseSequentialStream*)&SD3, "\n");
-
+	//chprintf((BaseSequentialStream*)&SD3, "\n");
 
 	return obstacle;
 }
