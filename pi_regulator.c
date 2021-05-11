@@ -18,7 +18,7 @@ int16_t pi_regulator(int16_t error){
     static int16_t sum_error = 0;
 
     //disables the PI regulator if the error is to small
-    //this avoids to always move as we cannot exactly be where we want and 
+    //this avoids to always rotate the robot as we cannot be exactly on the line and
     //the camera is a bit noisy
     if(fabs(error) < ERROR_THRESHOLD){
         return 0;
@@ -46,7 +46,7 @@ int16_t get_speed_pi(void){
 
     int16_t speed_rotation = 0;
 
-    //computes a correction factor to let the robot rotate to be in front of the line
+    //computes a rotation to let the robot rotate to be on the line
     speed_rotation = pi_regulator(get_offset_from_center());
     return speed_rotation;
 }

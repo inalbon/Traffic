@@ -5,7 +5,7 @@
 #include <chprintf.h>
 
 #include <sensors/proximity.h>
-
+#include <obstacle_detection.h>
 //IR0 (front-right)
 //IR1 (front-right-45deg)
 //IR7 (front-left)
@@ -26,7 +26,6 @@ bool obstacle_detection(void){
 	}
 
 //	chprintf((BaseSequentialStream*)&SD3, "\n");
-
 
 	return obstacle;
 }
