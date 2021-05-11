@@ -9,7 +9,7 @@
 #include <process_image.h>
 
 
-static int32_t offset_from_center = 0;
+static int16_t offset_from_center = 0;
 
 //semaphore
 static BSEMAPHORE_DECL(image_ready_sem, TRUE);
@@ -18,9 +18,9 @@ static BSEMAPHORE_DECL(image_ready_sem, TRUE);
  *  Returns the error between (dist_r and dist_l)/2
  *  Returns 0 if line not found
  */
-int32_t extract_offset_from_center(uint8_t *buffer){
+int16_t extract_offset_from_center(uint8_t *buffer){
 	
-	int32_t offset = 0;
+	int16_t offset = 0;
 	uint16_t i = 0, begin = 0, end = 0;
 	uint8_t stop = 0, wrong_line = 0, line_not_found = 0;
 	uint32_t mean = 0;
@@ -82,9 +82,9 @@ int32_t extract_offset_from_center(uint8_t *buffer){
 
 	// if line not found, take last offset sign into account to decide which side to turn
 	if(line_not_found){
-		if(offset_from_center>0)
+		if(offset_from_center > 0)
 			offset = OFFSET_MAX;
-		else if(offset_from_center<0)
+		else if(offset_from_center < 0)
 			offset = -OFFSET_MAX;
 	}
 	else{
@@ -157,7 +157,7 @@ static THD_FUNCTION(ProcessImage, arg) {
     }
 }
 
-float get_offset_from_center(void){
+int16_t get_offset_from_center(void){
 	return offset_from_center;
 }
 

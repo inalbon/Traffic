@@ -11,11 +11,11 @@
 #include <process_image.h>
 
 //simple PI regulator implementation
-int16_t pi_regulator(float error){
+int16_t pi_regulator(int16_t error){
 
     float speed = 0;
 
-    static float sum_error = 0;
+    static int32_t sum_error = 0;
 
     //disables the PI regulator if the error is to small
     //this avoids to always move as we cannot exactly be where we want and 
