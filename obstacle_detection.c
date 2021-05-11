@@ -20,12 +20,12 @@ bool obstacle_detection(void){
 
 	for(i=0; i<PROXIMITY_NB_CHANNELS; i++){
 		delta[i] = get_prox(i);
-		chprintf((BaseSequentialStream*)&SD3, "\n delta %d = %d \t ", i, delta[i]);
+		//chprintf((BaseSequentialStream*)&SD3, "\n delta %d = %d \t ", i, delta[i]);
 		if (delta[i] > DELTA_MAX)
 			obstacle = 1;
 	}
 
-	chprintf((BaseSequentialStream*)&SD3, "\n");
+//	chprintf((BaseSequentialStream*)&SD3, "\n");
 
 
 	return obstacle;

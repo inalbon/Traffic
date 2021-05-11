@@ -20,7 +20,7 @@ static BSEMAPHORE_DECL(image_ready_sem, TRUE);
  */
 int32_t extract_offset_from_center(uint8_t *buffer){
 	
-	int32_t offset=0;
+	int32_t offset = 0;
 	uint16_t i = 0, begin = 0, end = 0;
 	uint8_t stop = 0, wrong_line = 0, line_not_found = 0;
 	uint32_t mean = 0;
@@ -80,13 +80,21 @@ int32_t extract_offset_from_center(uint8_t *buffer){
 		}
 	}while(wrong_line);
 
-	//Find offset = (dist_right - dist_left)/2
-	if(abs(offset)>IMAGE_BUFFER_SIZE/2)
-		return offset=IMAGE_BUFFER_SIZE/2;
-	else
-		return offset = (IMAGE_BUFFER_SIZE-end-begin)/2; //(l2-l1)/2 = offset 
+	// if line not found, take last offset sign into account to decide which side to turn
+	if(line_not_found){
+		if(offset_from_center>0)
+			offset = OFFSET_MAX;
+		else if(offset_from_center<0)
+			offset = -OFFSET_MAX;
+	}
+	else{
+		//Find offset = (dist_right - dist_left)/2
+		offset = (IMAGE_BUFFER_SIZE-end-begin)/2;
+	}
 
+	chprintf((BaseSequentialStream*)&SD3, "\n offset =  %d \n ", offset);
 
+	return offset;
 }
 
 
