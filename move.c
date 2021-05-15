@@ -9,6 +9,7 @@
 #include <pi_regulator.h>
 #include <motors.h>
 #include <move.h>
+#include <leds.h>
 
 
 int16_t set_speed_rot(bool obstacle, int16_t speed_pi){
@@ -51,6 +52,20 @@ static THD_FUNCTION(Speed, arg) {
         speed_rot_temp = speed_rotation;
 
         speed = set_speed_lin(obstacle_detection());
+
+        if(speed == 0 && speed_rotation == 0){
+        	chprintf((BaseSequentialStream*)&SD3, "speed = 0 in\n ");
+			for(int i=0; i<NUM_RGB_LED; i++) {
+				toggle_rgb_led(i,RED_LED,RGB_MAX_INTENSITY);
+        	}
+        	//set_body_led(1);
+        }
+		if(speed != 0 || speed_rotation != 0){
+			chprintf((BaseSequentialStream*)&SD3, "speed != 0 in\n ");
+			clear_leds();
+			//set_body_led(0);
+		}
+
 
         //computes a correction factor to rotate the robot to be on the line
         speed_rotation = set_speed_rot(obstacle_detection(),get_speed_pi());
