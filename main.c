@@ -12,6 +12,7 @@
 #include <motors.h>
 #include <camera/po8030.h>
 #include <sensors/proximity.h>
+#include <leds.h>
 #include <chprintf.h>
 
 #include <pi_regulator.h>
@@ -47,10 +48,16 @@ int main(void)
     halInit();
     chSysInit();
     mpu_init();
+
+    //Inits the Inter Process Communication bus
     messagebus_init(&bus, &bus_lock, &bus_condvar);
 
-    //starts the serial communication
-    serial_start();
+    //Init leds
+    clear_leds();
+    set_body_led(0);
+
+
+
     //start the USB communication
     usb_start();
     //starts the camera
@@ -60,6 +67,12 @@ int main(void)
     proximity_start();
 	//inits the motors
 	motors_init();
+
+	//
+	spi_comm_start();
+
+	//starts the serial communication
+	serial_start();
 
 	//stars the threads for the speed of the robot and the processing of the image
 	speed_start();
