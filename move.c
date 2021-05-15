@@ -10,6 +10,7 @@
 #include <motors.h>
 #include <move.h>
 #include <leds.h>
+#include <audio/play_melody.h>
 
 
 int16_t set_speed_rot(bool obstacle, int16_t speed_pi){
@@ -63,6 +64,7 @@ static THD_FUNCTION(Speed, arg) {
 		if(speed != 0 || speed_rotation != 0){
 			chprintf((BaseSequentialStream*)&SD3, "speed != 0 in\n ");
 			clear_leds();
+			playMelody(MARIO,ML_WAIT_AND_CHANGE,NULL);
 			//set_body_led(0);
 		}
 

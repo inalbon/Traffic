@@ -13,6 +13,7 @@
 #include <camera/po8030.h>
 #include <sensors/proximity.h>
 #include <leds.h>
+#include <audio/play_melody.h>
 #include <chprintf.h>
 
 #include <pi_regulator.h>
@@ -68,7 +69,7 @@ int main(void)
 	//inits the motors
 	motors_init();
 
-	//
+	//starts the spi communication
 	spi_comm_start();
 
 	//starts the serial communication
@@ -77,6 +78,9 @@ int main(void)
 	//stars the threads for the speed of the robot and the processing of the image
 	speed_start();
 	process_image_start();
+
+	//starts the thread of the melody
+	playMelodyStart();
 
     /* Infinite loop. */
     while (1) {
