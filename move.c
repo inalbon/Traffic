@@ -58,12 +58,12 @@ static THD_FUNCTION(Speed, arg) {
 			for(int i=0; i<NUM_RGB_LED; i++) {
 				toggle_rgb_led(i,RED_LED,RGB_MAX_INTENSITY);
         	}
-        	//set_body_led(1);
+        	set_body_led(0);
         }
 		if(speed != 0 || speed_rotation != 0){
 			chprintf((BaseSequentialStream*)&SD3, "speed != 0 in\n ");
 			clear_leds();
-			//set_body_led(0);
+			set_body_led(1);
 		}
 
 
