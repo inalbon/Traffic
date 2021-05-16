@@ -80,6 +80,7 @@ int main(void)
 	process_image_start();
 
 	//starts the thread of the melody
+	mic_start(NULL);
 	playMelodyStart();
 
     /* Infinite loop. */
