@@ -113,8 +113,6 @@ static THD_FUNCTION(ProcessImage, arg) {
 	uint8_t *img_buff_ptr;
 	uint8_t image[IMAGE_BUFFER_SIZE] = {0};
 
-	bool send_to_computer = true;
-
     while(1){
     	//waits until an image has been captured
         chBSemWait(&image_ready_sem);
@@ -128,12 +126,6 @@ static THD_FUNCTION(ProcessImage, arg) {
 
 		//search for an offset from the center of the line to follow
 		offset_from_center = extract_offset_from_center(image);
-
-		if(send_to_computer)
-			SendUint8ToComputer(image, IMAGE_BUFFER_SIZE);//sends to the computer the image
-
-		//invert the bool
-		send_to_computer = !send_to_computer;
     }
 }
 
