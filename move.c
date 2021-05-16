@@ -1,6 +1,5 @@
 #include "ch.h"
 #include "hal.h"
-#include <chprintf.h>
 #include <usbcfg.h>
 
 #include <main.h>
@@ -75,7 +74,6 @@ static THD_FUNCTION(Speed, arg) {
 
 		//body led ON when rolling
 		if(speed == 0 && speed_rotation == 0){
-			chprintf((BaseSequentialStream*)&SD3, "speed = 0 in\n ");
 			for(int i=0; i<NUM_RGB_LED; i++)
 				toggle_rgb_led(i,RED_LED,RGB_MAX_INTENSITY);
 
@@ -84,7 +82,6 @@ static THD_FUNCTION(Speed, arg) {
 
 		//rgb leds ON when robot stops
 		if(speed != 0 || speed_rotation != 0){
-			chprintf((BaseSequentialStream*)&SD3, "speed != 0 in\n ");
 			clear_leds();
 			set_body_led(1);
 		}

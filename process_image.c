@@ -1,6 +1,5 @@
 #include "ch.h"
 #include "hal.h"
-#include <chprintf.h>
 #include <usbcfg.h>
 
 #include <main.h>
@@ -78,8 +77,6 @@ int16_t extract_offset_from_center(uint8_t *buffer){
 	}
 	else
 		offset = (IMAGE_BUFFER_SIZE-end-begin)/2;
-
-	//chprintf((BaseSequentialStream*)&SD3, "\n offset =  %d \n ", offset);
 
 	return offset;
 }

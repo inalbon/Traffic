@@ -13,7 +13,6 @@
 #include <camera/po8030.h>
 #include <sensors/proximity.h>
 #include <leds.h>
-#include <chprintf.h>
 
 #include <pi_regulator.h>
 #include <process_image.h>
@@ -66,7 +65,7 @@ int main(void)
 	//inits the motors
 	motors_init();
 
-	//
+	//start the spi communicatoin
 	spi_comm_start();
 
 	//starts the serial communication
