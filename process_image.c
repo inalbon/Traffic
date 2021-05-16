@@ -13,8 +13,8 @@ static int16_t offset_from_center = 0;
 static BSEMAPHORE_DECL(image_ready_sem, TRUE);
 
 /*
- *  Returns the error between (dist_r and dist_l)/2
- *  Returns 0 if line not found
+ *  Returns the offset from the center of the line to 
+ *	the border of the captured image
  */
 int16_t extract_offset_from_center(uint8_t *buffer){
 	
@@ -24,34 +24,29 @@ int16_t extract_offset_from_center(uint8_t *buffer){
 	uint32_t mean = 0;
 
 	//performs an average
-	for(uint16_t i = 0 ; i < IMAGE_BUFFER_SIZE ; i++){
+	for(uint16_t i = 0 ; i < IMAGE_BUFFER_SIZE ; i++)
 		mean += buffer[i];
-	}
+
 	mean /= IMAGE_BUFFER_SIZE;
 
 	do{
 		wrong_line = 0;
 		//search for a begin
-		while(stop == 0 && i < (IMAGE_BUFFER_SIZE - WIDTH_SLOPE))
-		{ 
+		while(stop == 0 && i < (IMAGE_BUFFER_SIZE - WIDTH_SLOPE)){ 
 			//the slope must at least be WIDTH_SLOPE wide and is compared
 		    //to the mean of the image
-		    if(buffer[i] > mean && buffer[i+WIDTH_SLOPE] < mean)
-		    {
+		    if(buffer[i] > mean && buffer[i+WIDTH_SLOPE] < mean){
 		        begin = i;
 		        stop = 1;
 		    }
 		    i++;
 		}
 		//if a begin was found, search for an end
-		if (i < (IMAGE_BUFFER_SIZE - WIDTH_SLOPE) && begin)
-		{
+		if (i < (IMAGE_BUFFER_SIZE - WIDTH_SLOPE) && begin){
 		    stop = 0;
 		    
-		    while(stop == 0 && i < IMAGE_BUFFER_SIZE)
-		    {
-		        if(buffer[i] > mean && buffer[i-WIDTH_SLOPE] < mean)
-		        {
+		    while(stop == 0 && i < IMAGE_BUFFER_SIZE){
+		        if(buffer[i] > mean && buffer[i-WIDTH_SLOPE] < mean){
 		            end = i;
 		            stop = 1;
 		        }
@@ -59,14 +54,10 @@ int16_t extract_offset_from_center(uint8_t *buffer){
 		    }
 		    //if an end was not found
 		    if (i > IMAGE_BUFFER_SIZE || !end)
-		    {
 		        line_not_found = 1;
-		    }
 		}
 		else//if no begin was found
-		{ 
 		    line_not_found = 1;
-		}
 
 		//if a line too small has been detected, continues the search
 		if(!line_not_found && (end-begin) < MIN_LINE_WIDTH){
@@ -85,10 +76,8 @@ int16_t extract_offset_from_center(uint8_t *buffer){
 		else if(offset_from_center < 0)
 			offset = -OFFSET_MAX;
 	}
-	else{
-		//Find offset = (dist_right - dist_left)/2
+	else
 		offset = (IMAGE_BUFFER_SIZE-end-begin)/2;
-	}
 
 	//chprintf((BaseSequentialStream*)&SD3, "\n offset =  %d \n ", offset);
 
@@ -137,19 +126,16 @@ static THD_FUNCTION(ProcessImage, arg) {
 		img_buff_ptr = dcmi_get_last_image_ptr();
 
 		//Extracts only the red pixels
-		for(uint16_t i = 0 ; i < (2 * IMAGE_BUFFER_SIZE) ; i+=2){
-			//extracts first 5bits of the first byte
-			//takes nothing from the second byte
-			image[i/2] = (uint8_t)img_buff_ptr[i]&0xF8;
-		}
+		for(uint16_t i = 0 ; i < (2 * IMAGE_BUFFER_SIZE) ; i+=2)
+			image[i/2] = (uint8_t)img_buff_ptr[i]&0xF8; //extracts first 5bits of the first byte
+													   //takes nothing from the second byte
 
 		//search for an offset from the center of the line to follow
 		offset_from_center = extract_offset_from_center(image);
 
-		if(send_to_computer){
-			//sends to the computer the image
-			SendUint8ToComputer(image, IMAGE_BUFFER_SIZE);
-		}
+		if(send_to_computer)
+			SendUint8ToComputer(image, IMAGE_BUFFER_SIZE);//sends to the computer the image
+
 		//invert the bool
 		send_to_computer = !send_to_computer;
     }
