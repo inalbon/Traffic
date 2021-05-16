@@ -49,8 +49,10 @@ int main(void)
     //starts the camera
     dcmi_start();
 	po8030_start();
+
     //starts the proximity sensors and the thread proximity
     proximity_start();
+
 	//inits the motors
 	motors_init();
 
@@ -60,8 +62,10 @@ int main(void)
 	//starts the serial communication
 	serial_start();
 
-	//stars the threads for the speed of the robot and the processing of the image
+	//starts the threads for the speed of the robot 
 	speed_start();
+
+	//starts the processing of the image
 	process_image_start();
 
     /* Infinite loop. */
