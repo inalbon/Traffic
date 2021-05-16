@@ -1,17 +1,11 @@
 #include "ch.h"
 #include "hal.h"
-#include <math.h>
 #include <usbcfg.h>
 #include <chprintf.h>
 
 #include <sensors/proximity.h>
 
-//IR0 (front-right)
-//IR1 (front-right-45deg)
-//IR7 (front-left)
-//IR6 (front-left-45deg)
-enum{ IR0, IR1, IR2, IR3, IR4, IR5, IR6, IR7};
-#define DELTA_MAX 300 //difference between ambient and reflected light
+#include <obstacle_detection.h>
 
 bool obstacle_detection(void){
 

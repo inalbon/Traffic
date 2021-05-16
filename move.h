@@ -14,7 +14,6 @@ taken at https://moodle.epfl.ch/course/view.php?id=467
 #ifndef MOVE_H_
 #define MOVE_H_
 
-
 #define NORMAL_SPEED 360 // step/s
 
 void speed_start(void);
