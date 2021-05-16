@@ -12,6 +12,7 @@
 #include <move.h>
 
 int16_t set_speed_rot(bool obstacle, int16_t speed_pi){
+
 	int16_t speed = 0;
 
 	if(obstacle)
@@ -23,7 +24,9 @@ int16_t set_speed_rot(bool obstacle, int16_t speed_pi){
 }
 
 int16_t set_speed_lin(bool obstacle){
+
 	int16_t speed = 0;
+
 	if(obstacle)
 			speed = 0;
 	else
