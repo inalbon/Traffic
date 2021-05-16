@@ -4,10 +4,8 @@
 #include <usbcfg.h>
 
 #include <main.h>
-#include <camera/po8030.h>
 
 #include <process_image.h>
-
 
 static int16_t offset_from_center = 0;
 
