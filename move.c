@@ -11,6 +11,7 @@
 
 #include <move.h>
 
+//set the rotation speed
 int16_t set_speed_rot(bool obstacle, int16_t speed_pi){
 
 	int16_t speed = 0;
@@ -23,12 +24,13 @@ int16_t set_speed_rot(bool obstacle, int16_t speed_pi){
 	return speed;
 }
 
+//set the linear speed
 int16_t set_speed_lin(bool obstacle){
 
 	int16_t speed = 0;
 
 	if(obstacle)
-			speed = 0;
+		speed = 0;
 	else
 		speed = NORMAL_SPEED;
 

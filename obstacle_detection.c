@@ -20,6 +20,7 @@ bool obstacle_detection(void){
 	bool obstacle = 0;
 	int16_t delta[PROXIMITY_NB_CHANNELS] = {0};
 
+	//get delta of all proximity sensors
 	for(i=0; i<PROXIMITY_NB_CHANNELS; i++){
 		delta[i] = get_prox(i);
 		//chprintf((BaseSequentialStream*)&SD3, "\n delta %d = %d \t ", i, delta[i]);
