@@ -1,4 +1,5 @@
 /*
+
 File    : process_image.h
 Author  : Isione Bonvalot
 Date    : 6 May 2021
@@ -16,4 +17,4 @@ taken at https://moodle.epfl.ch/course/view.php?id=467
 int16_t get_offset_from_center(void);
 void process_image_start(void);
 
-#endif
+#endif /* PROCESS_IMAGE_H */
