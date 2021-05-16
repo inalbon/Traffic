@@ -13,8 +13,8 @@ static int16_t offset_from_center = 0;
 static BSEMAPHORE_DECL(image_ready_sem, TRUE);
 
 /*
- *  Returns the offset from the center of the line to 
- *	the border of the captured image
+ *  Returns the offset between the center of the line and
+ *	the center of the captured image
  */
 int16_t extract_offset_from_center(uint8_t *buffer){
 	
