@@ -1,7 +1,6 @@
 #include "ch.h"
 #include "hal.h"
 #include <math.h>
-#include <usbcfg.h>
 
 #include <main.h>
 #include <motors.h>

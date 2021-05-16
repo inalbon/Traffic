@@ -7,7 +7,6 @@
 #include "ch.h"
 #include "hal.h"
 #include "memory_protection.h"
-#include <usbcfg.h>
 #include <main.h>
 #include <motors.h>
 #include <camera/po8030.h>
@@ -55,8 +54,6 @@ int main(void)
     clear_leds();
     set_body_led(0);
 
-    //start the USB communication
-    usb_start();
     //starts the camera
     dcmi_start();
 	po8030_start();
