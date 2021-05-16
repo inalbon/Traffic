@@ -75,8 +75,12 @@ static THD_FUNCTION(Speed, arg) {
         //if robot nearly on the line, do not rotate
         if(abs(speed_rotation)<ROTATION_THRESHOLD)
         	speed_rotation = 0;
-        else if(abs(speed_rotation)>ROTATION_MAX)
-        	speed_rotation = speed_rot_temp;
+        else if(abs(speed_rotation)>ROTATION_MAX){
+        	if(speed_rot_temp<0)
+        		speed_rotation = - ROTATION_MAX;
+        	else if(speed_rot_temp>0)
+        		speed_rotation = ROTATION_MAX;
+        }
 
         //applies the speed rotation from the PI regulator and the linear speed
 		right_motor_set_speed(speed + speed_rotation);
