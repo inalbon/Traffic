@@ -56,8 +56,6 @@ int main(void)
     clear_leds();
     set_body_led(0);
 
-
-
     //start the USB communication
     usb_start();
     //starts the camera

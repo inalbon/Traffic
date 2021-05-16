@@ -11,14 +11,14 @@ extern "C" {
 #include "move.h"
 
 
-//constants for the differents parts of the project
+//constants for the different parts of the project
 #define IMAGE_BUFFER_SIZE		640
 #define OFFSET_MAX				200
 #define WIDTH_SLOPE				5
 #define MIN_LINE_WIDTH			40
 #define ROTATION_THRESHOLD		10
 #define ROTATION_MAX			(NORMAL_SPEED/3) 
-#define ERROR_THRESHOLD			0.1f	//[cm] because of the noise of the camera
+#define ERROR_THRESHOLD			0.1f	//[pixels] because of the noise of the camera
 #define KP						0.8f
 #define KI 						0.004f	//must not be zero
 #define MAX_SUM_ERROR 			(MOTOR_SPEED_LIMIT/KI)
