@@ -45,29 +45,12 @@ static THD_FUNCTION(Speed, arg) {
 
     int16_t speed = 0;
     int16_t speed_rotation = 0;
-    int16_t speed_rot_temp = 0;
 
     while(1){
         time = chVTGetSystemTime();
 
-        //if speed rotation of PI regulator too high, stores the old value
-        speed_rot_temp = speed_rotation;
-
+        //computes linear speed
         speed = set_speed_lin(obstacle_detection());
-
-        if(speed == 0 && speed_rotation == 0){
-        	chprintf((BaseSequentialStream*)&SD3, "speed = 0 in\n ");
-			for(int i=0; i<NUM_RGB_LED; i++) {
-				toggle_rgb_led(i,RED_LED,RGB_MAX_INTENSITY);
-        	}
-        	set_body_led(0);
-        }
-		if(speed != 0 || speed_rotation != 0){
-			chprintf((BaseSequentialStream*)&SD3, "speed != 0 in\n ");
-			clear_leds();
-			set_body_led(1);
-		}
-
 
         //computes a correction factor to rotate the robot to be on the line
         speed_rotation = set_speed_rot(obstacle_detection(),get_speed_pi());
@@ -75,16 +58,34 @@ static THD_FUNCTION(Speed, arg) {
         //if robot nearly on the line, do not rotate
         if(abs(speed_rotation)<ROTATION_THRESHOLD)
         	speed_rotation = 0;
+
+        //if speed rotation > ROTATION_MAX, limit speed_rotation
         else if(abs(speed_rotation)>ROTATION_MAX){
-        	if(speed_rot_temp<0)
+        	if(speed_rotation<0)
         		speed_rotation = - ROTATION_MAX;
-        	else if(speed_rot_temp>0)
+        	else if(speed_rotation>0)
         		speed_rotation = ROTATION_MAX;
         }
 
         //applies the speed rotation from the PI regulator and the linear speed
 		right_motor_set_speed(speed + speed_rotation);
 		left_motor_set_speed(speed - speed_rotation);
+
+		//body led ON when rolling
+		if(speed == 0 && speed_rotation == 0){
+			chprintf((BaseSequentialStream*)&SD3, "speed = 0 in\n ");
+			for(int i=0; i<NUM_RGB_LED; i++)
+				toggle_rgb_led(i,RED_LED,RGB_MAX_INTENSITY);
+
+			set_body_led(0);
+		}
+
+		//rgb leds ON when robot stops
+		if(speed != 0 || speed_rotation != 0){
+			chprintf((BaseSequentialStream*)&SD3, "speed != 0 in\n ");
+			clear_leds();
+			set_body_led(1);
+		}
 
         //100Hz
         chThdSleepUntilWindowed(time, time + MS2ST(10));
