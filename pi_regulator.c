@@ -28,9 +28,9 @@ int16_t pi_regulator(int16_t error){
 
     //we set a maximum and a minimum for the sum to avoid an uncontrolled growth
     if(sum_error > MAX_SUM_ERROR)
-        sum_error = MAX_SUM_ERROR;
+        sum_error = (int16_t) MAX_SUM_ERROR;
     else if(sum_error < -MAX_SUM_ERROR)
-        sum_error = -MAX_SUM_ERROR;
+        sum_error = (int16_t) -MAX_SUM_ERROR;
 
     speed = KP * error + KI * sum_error; //formula for a PI regulator
 
