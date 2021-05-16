@@ -11,7 +11,7 @@ Function to detect obstacle with library proximity_sensors.h
 #ifndef OBSTACLE_DETECTION_H_
 #define OBSTACLE_DETECTION_H_
 
-#define DELTA_MAX 300 //difference between ambient and reflected light
+#define DELTA_MAX 50 //difference between ambient and reflected light
 
 bool obstacle_detection(void);
 
