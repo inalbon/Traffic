@@ -9,6 +9,7 @@
 #include <pi_regulator.h>
 #include <motors.h>
 #include <move.h>
+#include <leds.h>
 
 
 int16_t set_speed_rot(bool obstacle, int16_t speed_pi){
