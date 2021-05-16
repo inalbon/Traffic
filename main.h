@@ -19,8 +19,8 @@ extern "C" {
 #define ROTATION_THRESHOLD		10
 #define ROTATION_MAX			(NORMAL_SPEED/3) 
 #define ERROR_THRESHOLD			0.1f	//[cm] because of the noise of the camera
-#define KP						0.2f
-#define KI 						0.5f	//must not be zero
+#define KP						0.8f
+#define KI 						0.004f	//must not be zero
 #define MAX_SUM_ERROR 			(MOTOR_SPEED_LIMIT/KI)
 
 /** Robot wide IPC bus. */
