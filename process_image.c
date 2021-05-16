@@ -124,7 +124,7 @@ static THD_FUNCTION(ProcessImage, arg) {
 			image[i/2] = (uint8_t)img_buff_ptr[i]&0xF8; //extracts first 5bits of the first byte
 													   //takes nothing from the second byte
 
-		//search for an offset from the center of the line to follow
+		//search for an offset between the center of the line to follow and the center of the image
 		offset_from_center = extract_offset_from_center(image);
     }
 }
